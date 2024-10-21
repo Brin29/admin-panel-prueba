@@ -10,9 +10,11 @@ public class DireccionEntity {
 
     private String pais;
 
-    private String departamento;
+    private String provincia;
 
     private String ciudad;
 
     private String direccion;
+
+    private String codigoPostal;
 }
