@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "productos")
-public class ProductsEntity {
+public class ProductEntity {
 
     @GeneratedValue @Id
     private Long id;
