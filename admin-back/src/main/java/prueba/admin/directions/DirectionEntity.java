@@ -1,4 +1,4 @@
-package prueba.admin.Direccion;
+package prueba.admin.directions;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,7 +27,7 @@ public class DirectionEntity {
     private String city;
 
     @Column(nullable = false, name = "direccion")
-    private String direccion;
+    private String direction;
 
     @Column(nullable = false, name = "codigo postal")
     private String zipCode;

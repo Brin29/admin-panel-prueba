@@ -1,4 +1,4 @@
-package prueba.admin.Productos;
+package prueba.admin.products;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,21 +19,29 @@ public class ProductEntity {
     @GeneratedValue @Id
     private Long id;
 
+    @Column(name = "nombre")
     private String name;
 
+    @Column(name = "precio")
     private int price;
 
+    @Column(name = "descuento")
     private boolean discount;
 
+    @Column(name = "imagen")
     private String img;
 
+    @Column(name = "categoria")
     private String category;
 
     private List<String> color;
 
+    @Column(name = "talla")
     private List<String> size;
 
+    @Column(name = "descripcion")
     private String description;
 
+    @Column(name = "cantidad")
     private int quantity;
 }

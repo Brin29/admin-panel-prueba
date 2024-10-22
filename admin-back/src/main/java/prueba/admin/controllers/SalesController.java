@@ -1,4 +1,4 @@
-package prueba.admin.Controllers;
+package prueba.admin.controllers;
 
 public class SalesController {
 }

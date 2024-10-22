@@ -1,4 +1,4 @@
-package prueba.admin.Usuario;
+package prueba.admin.users;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

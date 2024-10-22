@@ -1,4 +1,4 @@
-package prueba.admin.Productos;
+package prueba.admin.products;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

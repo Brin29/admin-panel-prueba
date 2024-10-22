@@ -1,8 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import products from "../json/productos.json";
 
 const Products = () => {
+  const data =  {
+    name: "breiner"
+  }
 
+  const configuration = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  }
+
+  useEffect(() => {
+    fetch("http://localhost:8080/v1/add-product", configuration)
+    .then(res => console.log(res))
+  })
   return (
     <>
       <h1 className="text-2xl font-bold mb-4">Productos</h1>

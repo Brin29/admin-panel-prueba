@@ -1,13 +1,15 @@
-package prueba.admin.Controllers;
+package prueba.admin.controllers;
 
 import org.springframework.web.bind.annotation.*;
-import prueba.admin.Productos.ProductEntity;
-import prueba.admin.Productos.ProductRepository;
+import prueba.admin.exceptions.ProductNotFoundException;
+import prueba.admin.products.ProductEntity;
+import prueba.admin.products.ProductRepository;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/v1")
 public class ProductController {
 
     private final ProductRepository repository;
