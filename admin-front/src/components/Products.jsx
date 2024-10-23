@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import products from "../json/productos.json";
 
 const Products = () => {
@@ -51,11 +51,10 @@ const Products = () => {
   return (
     <>
       {openPopup &&
-      <div className="z-10 fixed inset-0 flex items-center justify-center bg-gray-400 m-auto w-9/12 h-5/6">
+      <div className="z-10 fixed inset-0 flex items-center justify-center bg-gray-400 m-auto w-9/12 h-5/6 p-10">
 
-<form onSubmit={addProductApi} className="space-y-12">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-8">
-        {/* Columna 1 */}
+      <form onSubmit={addProductApi} className="">
+      <div className="flex flex-wrap gap-x-10">
         <div>
           <label className="block text-sm font-medium leading-6 text-gray-900">Product Name</label>
           <input
