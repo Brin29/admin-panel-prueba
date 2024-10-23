@@ -32,6 +32,7 @@ const Products = () => {
   // Envio a la api
   const addProductApi = (e) => {
     e.preventDefault();
+    console.log(e);
     const configuration = {
       method: "POST",
       headers: {
@@ -53,9 +54,9 @@ const Products = () => {
       {openPopup &&
       <div className=" z-10 fixed inset-0 flex items-center justify-center bg-stone-100 m-auto w-9/12 h-auto max-h-[90%] rounded-3xl overflow-y-auto">
 
-      <form className="h-5/6">
+      <form className="h-5/6" onSubmit={addProductApi}>
       <div>
-        <h2 className="text-base font-semibold leading-7 text-gray-900 text-center text-4xl">
+        <h2 className="text-base font-semibold leading-7 text-gray-900 text-center text-5xl p-4">
           Añadir un nuevo producto
         </h2>
 
@@ -63,15 +64,17 @@ const Products = () => {
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
           {/* Nombre */}
           <div className="sm:col-span-3">
-            <label htmlFor="first-name" className="text-base block font-medium leading-6 text-gray-900">
+            <label htmlFor="productName" className="text-base block font-medium leading-6 text-gray-900">
               Nombre del Producto
             </label>
           <div className="mt-2">
             <input
               type="text"
-                  name="first-name"
-                  id="first-name"
-                  autoComplete="given-name"
+                  name="name"
+                  id="productName"
+                  required
+                  value={newProduct.name}
+                  onChange={newProductHandler}
                   className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-black-300 placeholder:text-gray-400"
                 />
               </div>
@@ -79,22 +82,41 @@ const Products = () => {
 
             {/* Precio */}
             <div className="sm:col-span-3">
-              <label htmlFor="last-name" className="text-base block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="price" className="text-base block text-sm font-medium leading-6 text-gray-900">
                 Precio
               </label>
               <div className="mt-2">
                 <input
-                  type="text"
-                  name="last-name"
-                  id="last-name"
-                  autoComplete="family-name"
+                  type="number"
+                  name="price"
+                  id="price"
+                  // required
+                  value={newProduct.price}
+                  onChange={newProductHandler}
                   className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
                 />
               </div>
             </div>
 
-            {/* Imagen */}
+             {/* Precio */}
+             <div className="sm:col-span-3">
+              <label htmlFor="addImg" className="text-base block text-sm font-medium leading-6 text-gray-900">
+                Imagen
+              </label>
+              <div className="mt-2">
+                <input
+                  type="text"
+                  name="img"
+                  id="addImg"
+                  // required
+                  value={newProduct.img}
+                  onChange={newProductHandler}
+                  className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
+                />
+              </div>
+            </div>
 
+            {/* Imagen
             <div className="col-span-full">
               <label htmlFor="cover-photo" className="block text-sm font-medium leading-6 text-gray-900">
                   Imagen
@@ -109,28 +131,30 @@ const Products = () => {
                     />
                   </svg>
                   <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                    <label htmlFor="file-upload" className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
+                    <label htmlFor="uploadImg" className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
                       <span>Upload a file</span>
-                      <input id="file-upload" name="file-upload" type="file" className="sr-only" />
+                      <input id="uploadImg" name="img" type="file" className="sr-only" />
                     </label>
                     <p className="pl-1">or drag and drop</p>
                   </div>
                   <p className="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Descripcion */}
             <div className="col-span-full">
-              <label htmlFor="street-address" className="text-base block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="description" className="text-base block text-sm font-medium leading-6 text-gray-900">
                 Descripcion
               </label>
               <div className="mt-2">
                 <input
                   type="text"
-                  name="street-address"
-                  id="street-address"
-                  autoComplete="street-address"
+                  name="description"
+                  id="description"
+                  required
+                  value={newProduct.description}
+                  onChange={newProductHandler}
                   className="text-base block w-full rounded-md  border-neutral-400 p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
                 />
               </div>
@@ -138,15 +162,17 @@ const Products = () => {
 
             {/* Color */}
             <div className="col-span-full">
-              <label htmlFor="street-address" className="text-base block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="color" className="text-base block text-sm font-medium leading-6 text-gray-900">
                 Color
               </label>
               <div className="mt-2">
                 <input
                   type="text"
-                  name="street-address"
-                  id="street-address"
-                  autoComplete="street-address"
+                  name="color"
+                  id="color"
+                  // required
+                  value={newProduct.color}
+                  onChange={newProductHandler}
                   className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
                 />
               </div>
@@ -154,15 +180,17 @@ const Products = () => {
 
             {/* Talla */}
             <div className="sm:col-span-2 sm:col-start-1">
-              <label htmlFor="city" className="text-base block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="quantity" className="text-base block text-sm font-medium leading-6 text-gray-900">
                 Cantidad
               </label>
               <div className="mt-2">
                 <input
-                  type="text"
-                  name="city"
-                  id="city"
-                  autoComplete="address-level2"
+                  type="number"
+                  name="quantity"
+                  id="quantity"
+                  // required
+                  value={newProduct.quantity}
+                  onChange={newProductHandler}
                   className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
                 />
               </div>
@@ -170,19 +198,19 @@ const Products = () => {
 
        {/* Categoria */}
        <div className="sm:col-span-3">
-              <label htmlFor="country" className="text-base block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="category" className="text-base block text-sm font-medium leading-6 text-gray-900">
                 Categoria
               </label>
               <div className="mt-2">
                 <select
-                  id="country"
-                  name="country"
-                  autoComplete="country-name"
+                  id="category"
+                  name="category"
+                  // required
                   className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
                 >
-                  <option>United States</option>
-                  <option>Canada</option>
-                  <option>Mexico</option>
+                  <option>Camisa</option>
+                  <option>Falda</option>
+                  <option>Vestido</option>
                 </select>
               </div>
             </div>
@@ -199,27 +227,27 @@ const Products = () => {
               <div className="mt-6 space-y-6">
                 <div className="relative flex gap-x-3">
                   <div className="flex h-6 items-center">
-                    <input id="comments" name="comments" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                    <input id="l" name="size" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
                   </div>
                   <div className="text-sm leading-6">
-                    <label htmlFor="comments" className="font-medium text-gray-900">Comments</label>
+                    <label htmlFor="l" className="font-medium text-gray-900">L</label>
                   </div>
                 </div>
                 <div className="relative flex gap-x-3">
                   <div className="flex h-6 items-center">
-                    <input id="candidates" name="candidates" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                    <input id="s" name="size" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
                   </div>
                   <div className="text-sm leading-6">
-                    <label htmlFor="candidates" className="font-medium text-gray-900">Candidates</label>
+                    <label htmlFor="s" className="font-medium text-gray-900">S</label>
                    
                   </div>
                 </div>
                 <div className="relative flex gap-x-3">
                   <div className="flex h-6 items-center">
-                    <input id="offers" name="offers" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                    <input id="m" name="size" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
                   </div>
                   <div className="text-sm leading-6">
-                    <label htmlFor="offers" className="font-medium text-gray-900">Offers</label>
+                    <label htmlFor="m" className="font-medium text-gray-900">M</label>
                   </div>
                 </div>
               </div>
@@ -229,12 +257,12 @@ const Products = () => {
               <legend className="text-sm font-semibold leading-6 text-gray-900">Descuento</legend>
               <div className="mt-6 space-y-6">
                 <div className="flex items-center gap-x-3">
-                  <input id="push-everything" name="push-notifications" type="radio" className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
-                  <label htmlFor="push-everything" className="block text-sm font-medium leading-6 text-gray-900">SI</label>
+                  <input id="yesDiscount" name="discount" type="radio" className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                  <label htmlFor="yesDiscount" className="block text-sm font-medium leading-6 text-gray-900">SI</label>
                 </div>
                 <div className="flex items-center gap-x-3">
-                  <input id="push-email" name="push-notifications" type="radio" className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
-                  <label htmlFor="push-email" className="block text-sm font-medium leading-6 text-gray-900">NO</label>
+                  <input id="noDiscount" name="discount" type="radio" className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                  <label htmlFor="noDiscount" className="block text-sm font-medium leading-6 text-gray-900">NO</label>
                 </div>
               </div>
             </fieldset>
@@ -243,14 +271,14 @@ const Products = () => {
 
         {/* Talla */}
             <div className="sm:col-span-2 sm:col-start-1">
-              <label htmlFor="city" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="quantitySize" className="block text-sm font-medium leading-6 text-gray-900">
                 Cantidad del descuento
               </label>
               <div className="mt-2">
                 <input
-                  type="text"
-                  name="city"
-                  id="city"
+                  type="number"
+                  name="quantityDiscount"
+                  id="quantityDiscount"
                   autoComplete="address-level2"
                   className="block w-full rounded-md  py-1.5 text-gray-900 shadow-sm shadow-stone-400 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
