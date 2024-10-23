@@ -12,7 +12,7 @@ const Products = () => {
     discount: null,
     img: "",
     category: "",
-    color: [""],
+    color: [],
     size: [],
     description: "", 
     quantity: null
@@ -21,12 +21,27 @@ const Products = () => {
   // Datos del producto
   const newProductHandler = (e) => {
     const {name, value} = e.target;
-    setNewProduct(prev => ({
+      setNewProduct((prevData) => ({
+        ...prevData,
+        [name]: value
+      }));
+  };
+
+  const handleArrayChange = (e) => {
+    const { name, value } = e.target;
+    setNewProduct((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value.split(",").map(item => item.trim())
     }));
   };
 
+  const handleNumberChange = (e) => {
+    const { name, value } = e.target;
+    setNewProduct((prev) => ({
+      ...prev,
+      [name]: parseFloat(value) || 0
+    }));
+  };
   
 
   // Envio a la api
@@ -73,7 +88,7 @@ const Products = () => {
                   name="name"
                   id="productName"
                   required
-                  value={newProduct.name}
+                  value={newProduct.name || ""}
                   onChange={newProductHandler}
                   className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-black-300 placeholder:text-gray-400"
                 />
@@ -91,8 +106,8 @@ const Products = () => {
                   name="price"
                   id="price"
                   // required
-                  value={newProduct.price}
-                  onChange={newProductHandler}
+                  value={newProduct.price || ""}
+                  onChange={handleNumberChange}
                   className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
                 />
               </div>
@@ -109,7 +124,7 @@ const Products = () => {
                   name="img"
                   id="addImg"
                   // required
-                  value={newProduct.img}
+                  value={newProduct.img || ""}
                   onChange={newProductHandler}
                   className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
                 />
@@ -153,7 +168,7 @@ const Products = () => {
                   name="description"
                   id="description"
                   required
-                  value={newProduct.description}
+                  value={newProduct.description || ""}
                   onChange={newProductHandler}
                   className="text-base block w-full rounded-md  border-neutral-400 p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
                 />
@@ -172,7 +187,7 @@ const Products = () => {
                   id="color"
                   // required
                   value={newProduct.color}
-                  onChange={newProductHandler}
+                  onChange={handleArrayChange}
                   className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
                 />
               </div>
@@ -189,7 +204,7 @@ const Products = () => {
                   name="quantity"
                   id="quantity"
                   // required
-                  value={newProduct.quantity}
+                  value={newProduct.quantity || ""}
                   onChange={newProductHandler}
                   className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
                 />
