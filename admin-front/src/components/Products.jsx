@@ -42,6 +42,29 @@ const Products = () => {
       [name]: parseFloat(value) || 0
     }));
   };
+
+  const handleSizeChange = (e) => {
+    const {name, checked} = e.target;
+    setNewProduct(prev => {
+      const sizes = prev.size;
+      if (checked){
+        return { ...prev, size:[...sizes, name]};
+      }
+      else {
+        return {
+          ...prev, size:sizes.filter(size => size !== name)}
+        
+      }
+    })
+  }
+
+  const handleDiscountChange = (e) => {
+    const {value} = e.target;
+    setNewProduct(prev => ({
+      ...prev,
+      discount: value === "yes" ? true : false
+    }));
+  }
   
 
   // Envio a la api
@@ -193,7 +216,6 @@ const Products = () => {
               </div>
             </div>
 
-            {/* Talla */}
             <div className="sm:col-span-2 sm:col-start-1">
               <label htmlFor="quantity" className="text-base block text-sm font-medium leading-6 text-gray-900">
                 Cantidad
@@ -205,7 +227,7 @@ const Products = () => {
                   id="quantity"
                   // required
                   value={newProduct.quantity || ""}
-                  onChange={newProductHandler}
+                  onChange={handleNumberChange}
                   className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
                 />
               </div>
@@ -221,18 +243,20 @@ const Products = () => {
                   id="category"
                   name="category"
                   // required
+                  onChange={newProductHandler}
                   className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
                 >
-                  <option>Camisa</option>
-                  <option>Falda</option>
-                  <option>Vestido</option>
+                  <option value="" disabled selected >Selecciona una categoria</option>
+                  <option value="camisa">Camisa</option>
+                  <option value="falda">Falda</option>
+                  <option value="vestido">Vestido</option>
                 </select>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Color */}
+        {/* Talla y Descuento */}
         <div className="pb-12">
           
           <div className="mt-10 space-y-10">
@@ -242,7 +266,7 @@ const Products = () => {
               <div className="mt-6 space-y-6">
                 <div className="relative flex gap-x-3">
                   <div className="flex h-6 items-center">
-                    <input id="l" name="size" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                    <input id="l" name="l" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleSizeChange}/>
                   </div>
                   <div className="text-sm leading-6">
                     <label htmlFor="l" className="font-medium text-gray-900">L</label>
@@ -250,7 +274,7 @@ const Products = () => {
                 </div>
                 <div className="relative flex gap-x-3">
                   <div className="flex h-6 items-center">
-                    <input id="s" name="size" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                    <input id="s" name="s" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleSizeChange}/>
                   </div>
                   <div className="text-sm leading-6">
                     <label htmlFor="s" className="font-medium text-gray-900">S</label>
@@ -259,7 +283,7 @@ const Products = () => {
                 </div>
                 <div className="relative flex gap-x-3">
                   <div className="flex h-6 items-center">
-                    <input id="m" name="size" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                    <input id="m" name="m" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleSizeChange}/>
                   </div>
                   <div className="text-sm leading-6">
                     <label htmlFor="m" className="font-medium text-gray-900">M</label>
@@ -294,7 +318,8 @@ const Products = () => {
                   type="number"
                   name="quantityDiscount"
                   id="quantityDiscount"
-                  autoComplete="address-level2"
+                  value={newProduct.discount || ""}
+                  onChange={handleDiscountChange}
                   className="block w-full rounded-md  py-1.5 text-gray-900 shadow-sm shadow-stone-400 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
