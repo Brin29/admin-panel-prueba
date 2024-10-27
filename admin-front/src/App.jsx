@@ -14,7 +14,7 @@ function App() {
      <Router>
       <div className="flex">
         <Sidebar />
-        <main className="flex-1 p-6 bg-gray-100 min-h-screen">
+        <main className="flex-1 p-6 bg-white min-h-screen">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/products" element={<Products />} />
