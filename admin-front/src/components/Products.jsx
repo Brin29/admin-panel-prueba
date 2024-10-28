@@ -2,15 +2,15 @@ import { useState } from "react";
 import products from "../json/productos.json";
 
 const Products = () => {
-  
+
+  const [image, setImage] = useState(null)
+
   const [openPopup, setOpenPopup] = useState(false)
-  
   // Producto
   const [newProduct, setNewProduct] = useState({
     name: "",
     price: null,
     discount: null,
-    img: null,
     imgPath: null,
     category: "",
     color: [],
@@ -32,17 +32,15 @@ const Products = () => {
   };
 
   const handleImgChange = e => {
-    const {name, value} = e.target;
+    const {value} = e.target;
 
     const img = value.split("\\").pop()
 
     setNewProduct((prevData) => ({
       ...prevData,
-      img: value,
       imgPath: img
-    })
-    
-  )
+    }))
+  setImage(value)
   }
 
   const handleArrayChange = (e) => {
@@ -100,10 +98,12 @@ const Products = () => {
     }
 
 
-    fetch("http://localhost:8080/v1/add-product", configuration)
+    fetch(`http://localhost:8080/v1/add-product}`, configuration)
     .then(res => console.log(res))
     .then(json => console.log(json))
     }
+
+    fetch(`http://localhost:8080/v1/upload?file=${newProduct.img}`)
 
   return (
     <>
@@ -164,7 +164,7 @@ const Products = () => {
                   name="img"
                   id="addImg"
                   // required
-                  value={newProduct.img || null}
+                  value={newProduct.imgPath || null}
                   onChange={handleImgChange}
                   className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
                 />
