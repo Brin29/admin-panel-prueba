@@ -10,13 +10,17 @@ const Products = () => {
     name: "",
     price: null,
     discount: null,
-    img: "",
+    img: null,
+    imgPath: null,
     category: "",
     color: [],
     size: [],
     description: "", 
     quantity: null
   })
+
+  console.log(newProduct.img)
+  console.log(newProduct.imgPath)
 
   // Datos del producto
   const newProductHandler = (e) => {
@@ -26,6 +30,20 @@ const Products = () => {
         [name]: value
       }));
   };
+
+  const handleImgChange = e => {
+    const {name, value} = e.target;
+
+    const img = value.split("\\").pop()
+
+    setNewProduct((prevData) => ({
+      ...prevData,
+      img: value,
+      imgPath: img
+    })
+    
+  )
+  }
 
   const handleArrayChange = (e) => {
     const { name, value } = e.target;
@@ -136,19 +154,18 @@ const Products = () => {
               </div>
             </div>
 
-             {/* Precio */}
              <div className="sm:col-span-3">
               <label htmlFor="addImg" className="text-base block text-sm font-medium leading-6 text-gray-900">
                 Imagen
               </label>
               <div className="mt-2">
                 <input
-                  type="text"
+                  type="file"
                   name="img"
                   id="addImg"
                   // required
-                  value={newProduct.img || ""}
-                  onChange={newProductHandler}
+                  value={newProduct.img || null}
+                  onChange={handleImgChange}
                   className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
                 />
               </div>
@@ -209,7 +226,7 @@ const Products = () => {
                   name="color"
                   id="color"
                   // required
-                  value={newProduct.color}
+                  value={newProduct.color || ""}
                   onChange={handleArrayChange}
                   className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
                 />
