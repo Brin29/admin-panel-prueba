@@ -60,6 +60,23 @@ const EditProduct = ({product}) => {
       discount: value === "yes" ? true : false
     }));
   }
+
+  const sendData = (e) => {
+    e.preventDefault()
+
+    const formData = new FormData();
+    formData.append("file", file)
+    formData.append('newProductJSON', JSON.stringify(editProduct));
+
+    const configuration = {
+      method: "PUT",
+      body: formData
+    }
+
+    fetch(`http://localhost:8080/v1/products/${editProduct.id}`, configuration)
+    .then(res => console.log(res))
+    .then(json => console.log(json))
+  }
   
 
   return (
@@ -72,7 +89,7 @@ const EditProduct = ({product}) => {
     {openPopup &&
     <div className=" z-10 fixed inset-0 flex items-center justify-center bg-stone-100 m-auto w-9/12 h-auto max-h-[90%] rounded-3xl overflow-y-auto">
 
-    <form className="h-5/6">
+    <form className="h-5/6" onSubmit={sendData}>
     <div>
       <h2 className="text-base font-semibold leading-7 text-gray-900 text-center text-5xl p-4">
         Añadir un nuevo producto
