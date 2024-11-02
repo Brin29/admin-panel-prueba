@@ -1,97 +1,25 @@
-import { useState } from "react";
+import { useState } from "react"
 
-const AddProduct = () => {
-
-  const [file, setFile] = useState(null);
+const EditProduct = ({product}) => {
+  const [editProduct, setEditProduct] = useState(product)
   const [openPopup, setOpenPopup] = useState(false)
-  const [newProduct, setNewProduct] = useState({
-    name: "",
-    price: null,
-    discount: null,
-    category: "",
-    img: "",
-    color: [],
-    size: [],
-    description: "", 
-    quantity: null
-  })
 
-  // Datos del producto
-  const newProductHandler = (e) => {
-    const {name, value} = e.target;
-      setNewProduct((prevData) => ({
-        ...prevData,
-        [name]: value
-      }));
-  };
-
-  const handleImgChange = e => {
-    setFile(e.target.files[0]);
-  }
-
-  const handleArrayChange = (e) => {
-    const { name, value } = e.target;
-    setNewProduct((prev) => ({
-      ...prev,
-      [name]: value.split(",").map(item => item.trim())
-    }));
-  };
-
-  const handleNumberChange = (e) => {
-    const { name, value } = e.target;
-    setNewProduct((prev) => ({
-      ...prev,
-      [name]: parseFloat(value) || 0
-    }));
-  };
-
-  const handleSizeChange = (e) => {
-    const {name, checked} = e.target;
-    setNewProduct(prev => {
-      const sizes = prev.size;
-      if (checked){
-        return { ...prev, size:[...sizes, name]};
-      }
-      else {
-        return {
-          ...prev, size:sizes.filter(size => size !== name)}
-        
-      }
-    })
-  }
-
-  const handleDiscountChange = (e) => {
-    const {value} = e.target;
-    setNewProduct(prev => ({
-      ...prev,
-      discount: value === "yes" ? true : false
-    }));
-  }
-  
-  const addProductApi = (e) => {
-    e.preventDefault();
-    
-    const formData = new FormData();
-    formData.append("file", file)
-    formData.append('newProductJSON', JSON.stringify(newProduct));
-
-    const configuration = {
-      method: "POST",
-      body: formData
-    }
-
-    fetch(`http://localhost:8080/v1/add-product`, configuration)
-    .then(res => console.log(res))
-    .then(json => console.log(json))
+  const onClickEditHandler = () => {
+    setOpenPopup(true)
+    console.log(product)
   }
 
   return (
     <>
+    <button className="mr-2 p-2 bg-yellow-500 text-white rounded" 
+    onClick={() => onClickEditHandler()}> 
+      Editar
+    </button>
     
-  {openPopup &&
+    {openPopup &&
     <div className=" z-10 fixed inset-0 flex items-center justify-center bg-stone-100 m-auto w-9/12 h-auto max-h-[90%] rounded-3xl overflow-y-auto">
 
-    <form className="h-5/6" onSubmit={addProductApi}>
+    <form className="h-5/6">
     <div>
       <h2 className="text-base font-semibold leading-7 text-gray-900 text-center text-5xl p-4">
         Añadir un nuevo producto
@@ -110,8 +38,7 @@ const AddProduct = () => {
                 name="name"
                 id="productName"
                 required
-                value={newProduct.name || ""}
-                onChange={newProductHandler}
+                value={product.name}
                 className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-black-300 placeholder:text-gray-400"
               />
             </div>
@@ -128,8 +55,7 @@ const AddProduct = () => {
                 name="price"
                 id="price"
                 // required
-                value={newProduct.price || ""}
-                onChange={handleNumberChange}
+                value={product.price}
                 className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
               />
             </div>
@@ -146,8 +72,7 @@ const AddProduct = () => {
                 accept="image/*"
                 id="addImg"
                 // required
-                value={newProduct.imgPath || null}
-                onChange={handleImgChange}
+                value={product.imgPath}
                 className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
               />
             </div>
@@ -164,8 +89,8 @@ const AddProduct = () => {
                 name="description"
                 id="description"
                 required
-                value={newProduct.description || ""}
-                onChange={newProductHandler}
+                value={product.description}
+                // onChange={newProductHandler}
                 className="text-base block w-full rounded-md  border-neutral-400 p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
               />
             </div>
@@ -182,8 +107,8 @@ const AddProduct = () => {
                 name="color"
                 id="color"
                 // required
-                value={newProduct.color || ""}
-                onChange={handleArrayChange}
+                value={product.color}
+                // onChange={handleArrayChange}
                 className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
               />
             </div>
@@ -199,8 +124,7 @@ const AddProduct = () => {
                 name="quantity"
                 id="quantity"
                 // required
-                value={newProduct.quantity || ""}
-                onChange={handleNumberChange}
+                value={product.quantity}
                 className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
               />
             </div>
@@ -216,7 +140,7 @@ const AddProduct = () => {
                 id="category"
                 name="category"
                 // required
-                onChange={newProductHandler}
+                // onChange={}
                 className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
               >
                 <option value="" disabled selected >Selecciona una categoria</option>
@@ -239,7 +163,7 @@ const AddProduct = () => {
             <div className="mt-6 space-y-6">
               <div className="relative flex gap-x-3">
                 <div className="flex h-6 items-center">
-                  <input id="l" name="l" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleSizeChange}/>
+                  <input id="l" name="l" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
                 </div>
                 <div className="text-sm leading-6">
                   <label htmlFor="l" className="font-medium text-gray-900">L</label>
@@ -247,7 +171,7 @@ const AddProduct = () => {
               </div>
               <div className="relative flex gap-x-3">
                 <div className="flex h-6 items-center">
-                  <input id="s" name="s" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleSizeChange}/>
+                  <input id="s" name="s" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
                 </div>
                 <div className="text-sm leading-6">
                   <label htmlFor="s" className="font-medium text-gray-900">S</label>
@@ -256,7 +180,7 @@ const AddProduct = () => {
               </div>
               <div className="relative flex gap-x-3">
                 <div className="flex h-6 items-center">
-                  <input id="m" name="m" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleSizeChange}/>
+                  <input id="m" name="m" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
                 </div>
                 <div className="text-sm leading-6">
                   <label htmlFor="m" className="font-medium text-gray-900">M</label>
@@ -291,36 +215,26 @@ const AddProduct = () => {
                 type="number"
                 name="quantityDiscount"
                 id="quantityDiscount"
-                value={newProduct.discount || ""}
-                onChange={handleDiscountChange}
+                value={product.discount}
                 className="block w-full rounded-md  py-1.5 text-gray-900 shadow-sm shadow-stone-400 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
     </div>
 
-    {/* Buttons */}
-    <div className="mt-6 flex items-center justify-end gap-x-6">
-      <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
-        Cancel
-      </button>
-      <button type="submit" className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm shadow-stone-400 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-        Save
-      </button>
+        <div className="mt-6 flex items-center justify-end gap-x-6">
+          <button type="button" className="text-sm font-semibold leading-6    text-gray-900">
+          Cancel
+          </button>
+          <button type="submit" className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm shadow-stone-400 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+          Save
+          </button>
+        </div>
+      </form>
     </div>
-  </form>
-</div>
-  }
-    <h1 className="text-2xl font-bold mb-4">Productos</h1>
-
-    <button
-      className="mb-4 p-2 bg-blue-500 text-white rounded"
-      onClick={() => setOpenPopup(true)}
-      >
-      Añadir Producto
-    </button>
+    }
     </>
   )
 }
 
-export default AddProduct;
+export default EditProduct;

@@ -1,8 +1,28 @@
 import AddProduct from "./AddProduct";
 import products from "../json/productos.json";
+import { useState, useEffect } from "react";
+import EditProduct from "./EditProduct";
 
 const Products = () => {
+  const [product, setProduct] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    fetch("http://localhost:8080/v1/products")
+    .then(res => res.json())
+    .then(json => {
+      setProduct(json)
+      setLoading(false)
+    })
+    .catch(err => {
+      console.error("Error en la imagenes: ", err)
+      setLoading(false)
+    })
+  }, [loading])
+
+  if (loading){
+    return <p>Cargando...</p>
+  }
   
 
   return (
@@ -10,6 +30,46 @@ const Products = () => {
       <AddProduct/>
 
       <div className="p-6 flex flex-wrap gap-0">
+        {product.map(product => (
+                <div
+                key={product.id}
+                className="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
+              >
+                <a
+                  className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"
+                  href="#"
+                >
+                  <img
+                    className="object-cover"
+                    src={product.img}
+                    alt="product image"
+                    title={product.name}
+                  />
+                </a>
+                <div className="mt-4 px-5 pb-5">
+                  <a href="#">
+                    <h5 className="text-xl tracking-tight text-slate-900">
+                      {product.name}
+                    </h5>
+                  </a>
+                  <div className="mt-2 mb-5 flex items-center justify-between">
+                    <p>
+                      <span className="text-3xl font-bold text-slate-900">
+                        {product.price}
+                      </span>
+                    </p>
+                  </div>
+                  <div>
+                  <EditProduct product={product}/>
+                    <button className="p-2 bg-red-500 text-white rounded">
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
+              </div>
+        ))
+      }
+
         {products.map((e, index) => {
           return (
             <div
@@ -41,9 +101,7 @@ const Products = () => {
                   </p>
                 </div>
                 <div>
-                  <button className="mr-2 p-2 bg-yellow-500 text-white rounded">
-                    Editar
-                  </button>
+                  <EditProduct product={e}/>
                   <button className="p-2 bg-red-500 text-white rounded">
                     Eliminar
                   </button>
