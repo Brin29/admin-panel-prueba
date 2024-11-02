@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.net.URL;
 import java.util.List;
 
 @Data
@@ -29,7 +30,7 @@ public class ProductEntity {
     private boolean discount;
 
     @Column(name = "imagen")
-    private String img;
+    private URL img;
 
     @Column(name = "categoria")
     private String category;

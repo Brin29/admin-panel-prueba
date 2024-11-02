@@ -3,7 +3,7 @@ package prueba.admin.controllers;
 import org.springframework.web.bind.annotation.*;
 import prueba.admin.exceptions.UserNotFoundException;
 import prueba.admin.users.UserEntity;
-import prueba.admin.users.UserRepository;
+import prueba.admin.users.UsersRepository;
 
 import java.util.List;
 
@@ -12,9 +12,9 @@ import java.util.List;
 @RequestMapping("/v1")
 public class UserController {
 
-    private final UserRepository repository;
+    private final UsersRepository repository;
 
-    public UserController(UserRepository repository){
+    public UserController(UsersRepository repository){
         this.repository = repository;
     }
 

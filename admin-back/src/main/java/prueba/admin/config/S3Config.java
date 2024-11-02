@@ -13,10 +13,10 @@ import software.amazon.awssdk.services.s3.S3Client;
 @Configuration
 public class S3Config {
 
-    @Value("@{aws.accesKeyId}")
+    @Value("${aws.accesKeyId}")
     private String accesKey;
 
-    @Value("@{aws.secretKey}")
+    @Value("${aws.secretKey}")
     private String secretKey;
 
     @Bean

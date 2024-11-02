@@ -2,5 +2,5 @@ package prueba.admin.users;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+public interface UsersRepository extends JpaRepository<UserEntity, Long> {
 }
