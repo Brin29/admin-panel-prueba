@@ -47,7 +47,7 @@ public class S3ServiceImpl implements IS3Service {
         return imageUrl;
     }
 
-    public URL updateFile(MultipartFile file, String prevFileName) throws  IOException{
+    public URL updateFile(MultipartFile file, String prevFileName) throws IOException{
         try{
             String newFileName = file.getOriginalFilename();
             deleteFile(prevFileName);

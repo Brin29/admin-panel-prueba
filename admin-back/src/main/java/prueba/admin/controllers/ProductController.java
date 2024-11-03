@@ -9,7 +9,6 @@ import prueba.admin.products.ProductRepository;
 import prueba.admin.service.IS3Service;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 @CrossOrigin
@@ -39,7 +38,8 @@ public class ProductController {
 
         ProductEntity newProduct = mapper.readValue(newProductJSON, ProductEntity.class);
 
-        newProduct.setImg(is3Service.uploadFile(file));
+        newProduct.setImgPath(is3Service.uploadFile(file));
+        newProduct.setImgName(file.getOriginalFilename());
         return repository.save(newProduct);
     }
 
@@ -56,31 +56,34 @@ public class ProductController {
                 .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
-    @PutMapping("/products/{id}")
-    ProductEntity replaceProduct(@RequestBody ProductEntity newProduct, @PathVariable Long id) {
-        return repository.findById(id)
+    @PutMapping("/products/{prevFileName}/{id}")
+    ProductEntity replaceProduct(@RequestParam ProductEntity newProductJSON, @RequestParam("file") MultipartFile file, @PathVariable("id") Long id,  @PathVariable("prevFileName") String prevFileName) throws IOException{
+
+
+            return repository.findById(id)
                 .map(product -> {
-                    product.setName(newProduct.getName());
-                    product.setCategory(newProduct.getCategory());
-                    product.setDescription(newProduct.getDescription());
-                    product.setImg(newProduct.getImg());
-                    product.setPrice(newProduct.getPrice());
-                    product.setColor(newProduct.getColor());
-                    product.setDiscount(newProduct.isDiscount());
-                    product.setSize(newProduct.getSize());
-                    product.setQuantity(newProduct.getQuantity());
+                    product.setName(newProductJSON.getName());
+                    product.setCategory(newProductJSON.getCategory());
+                    product.setDescription(newProductJSON.getDescription());
+                    try {
+                        product.setImgPath(is3Service.updateFile(file, prevFileName));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    product.setPrice(newProductJSON.getPrice());
+                    product.setColor(newProductJSON.getColor());
+                    product.setDiscount(newProductJSON.isDiscount());
+                    product.setImgName(file.getOriginalFilename());
+                    product.setSize(newProductJSON.getSize());
+                    product.setQuantity(newProductJSON.getQuantity());
 
                     return repository.save(product);
                 })
                 .orElseGet(() -> {
-                    return repository.save(newProduct);
+                    return repository.save(newProductJSON);
                 });
     }
 
-    @DeleteMapping("/products/{id}")
-    void deleteProducts(@PathVariable Long id){
-        repository.deleteById(id);
-    }
 
 
 }

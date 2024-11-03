@@ -29,8 +29,11 @@ public class ProductEntity {
     @Column(name = "descuento")
     private boolean discount;
 
-    @Column(name = "imagen")
-    private URL img;
+    @Column(name = "imagen_ruta")
+    private URL imgPath;
+
+    @Column(name = "imagen-name")
+    private String imgName;
 
     @Column(name = "categoria")
     private String category;
