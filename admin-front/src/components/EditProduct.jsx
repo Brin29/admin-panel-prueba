@@ -1,6 +1,7 @@
 import { useState } from "react"
 
-const EditProduct = ({product}) => {
+const EditProduct = ({product}) => {  
+  const [file, setFile] = useState(null);
   const [editProduct, setEditProduct] = useState(product)
   const [openPopup, setOpenPopup] = useState(false)
 
@@ -8,6 +9,75 @@ const EditProduct = ({product}) => {
     setOpenPopup(true)
     console.log(product)
   }
+
+  const handleImgChange = e => {
+    setFile(e.target.files[0]);
+  }
+
+  const handleTextChange = (e) => {
+    const {name, value} = e.target;
+    setEditProduct((prevData) => ({
+      ...prevData,
+      [name]: value
+    }))
+  }
+
+  const handleNumberChange = (e) => {
+    const {name, value} = e.target;
+    setEditProduct((prevData) => ({
+      ...prevData,
+      [name]: parseFloat(value) || 0
+    }))
+  }
+
+  const handleArrayChange = (e) => {
+    const { name, value } = e.target;
+    setEditProduct((prev) => ({
+      ...prev,
+      [name]: value.split(",").map(item => item.trim())
+    }));
+  };
+
+  const handleSizeChange = (e) => {
+    const {name, checked} = e.target;
+    setEditProduct(prev => {
+      const sizes = prev.size;
+      if (checked){
+        return { ...prev, size:[...sizes, name]};
+      }
+      else {
+        return {
+          ...prev, size:sizes.filter(size => size !== name)}
+        
+      }
+    })
+  }
+
+  const handleDiscountChange = (e) => {
+    const {value} = e.target;
+    setEditProduct(prev => ({
+      ...prev,
+      discount: value === "yes" ? true : false
+    }));
+  }
+
+  const sendData = (e) => {
+    e.preventDefault()
+
+    const formData = new FormData();
+    formData.append("file", file)
+    formData.append('newProductJSON', JSON.stringify(editProduct));
+
+    const configuration = {
+      method: "PUT",
+      body: formData
+    }
+
+    fetch(`http://localhost:8080/v1/products/${editProduct.id}`, configuration)
+    .then(res => console.log(res))
+    .then(json => console.log(json))
+  }
+  
 
   return (
     <>
@@ -19,7 +89,7 @@ const EditProduct = ({product}) => {
     {openPopup &&
     <div className=" z-10 fixed inset-0 flex items-center justify-center bg-stone-100 m-auto w-9/12 h-auto max-h-[90%] rounded-3xl overflow-y-auto">
 
-    <form className="h-5/6">
+    <form className="h-5/6" onSubmit={sendData}>
     <div>
       <h2 className="text-base font-semibold leading-7 text-gray-900 text-center text-5xl p-4">
         Añadir un nuevo producto
@@ -38,7 +108,8 @@ const EditProduct = ({product}) => {
                 name="name"
                 id="productName"
                 required
-                value={product.name}
+                value={editProduct.name}
+                onChange={handleTextChange}
                 className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-black-300 placeholder:text-gray-400"
               />
             </div>
@@ -55,7 +126,8 @@ const EditProduct = ({product}) => {
                 name="price"
                 id="price"
                 // required
-                value={product.price}
+                value={editProduct.price}
+                onChange={handleNumberChange}
                 className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
               />
             </div>
@@ -72,7 +144,8 @@ const EditProduct = ({product}) => {
                 accept="image/*"
                 id="addImg"
                 // required
-                value={product.imgPath}
+                value={editProduct.imgPath}
+                onChange={handleImgChange}
                 className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
               />
             </div>
@@ -89,8 +162,8 @@ const EditProduct = ({product}) => {
                 name="description"
                 id="description"
                 required
-                value={product.description}
-                // onChange={newProductHandler}
+                value={editProduct.description}
+                onChange={handleTextChange}
                 className="text-base block w-full rounded-md  border-neutral-400 p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
               />
             </div>
@@ -107,8 +180,8 @@ const EditProduct = ({product}) => {
                 name="color"
                 id="color"
                 // required
-                value={product.color}
-                // onChange={handleArrayChange}
+                value={editProduct.color}
+                onChange={handleArrayChange}
                 className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
               />
             </div>
@@ -124,7 +197,7 @@ const EditProduct = ({product}) => {
                 name="quantity"
                 id="quantity"
                 // required
-                value={product.quantity}
+                value={editProduct.quantity}
                 className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
               />
             </div>
@@ -140,7 +213,7 @@ const EditProduct = ({product}) => {
                 id="category"
                 name="category"
                 // required
-                // onChange={}
+                onChange={handleTextChange}
                 className="text-base block w-full rounded-md  p-1 shadow-sm shadow-stone-400 ring-gray-300 placeholder:text-gray-400"
               >
                 <option value="" disabled selected >Selecciona una categoria</option>
@@ -163,7 +236,7 @@ const EditProduct = ({product}) => {
             <div className="mt-6 space-y-6">
               <div className="relative flex gap-x-3">
                 <div className="flex h-6 items-center">
-                  <input id="l" name="l" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                  <input id="l" name="l" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"  onChange={handleSizeChange}/>
                 </div>
                 <div className="text-sm leading-6">
                   <label htmlFor="l" className="font-medium text-gray-900">L</label>
@@ -171,7 +244,7 @@ const EditProduct = ({product}) => {
               </div>
               <div className="relative flex gap-x-3">
                 <div className="flex h-6 items-center">
-                  <input id="s" name="s" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
+                  <input id="s" name="s" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 " onChange={handleSizeChange}/>
                 </div>
                 <div className="text-sm leading-6">
                   <label htmlFor="s" className="font-medium text-gray-900">S</label>
@@ -180,7 +253,7 @@ const EditProduct = ({product}) => {
               </div>
               <div className="relative flex gap-x-3">
                 <div className="flex h-6 items-center">
-                  <input id="m" name="m" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
+                  <input id="m" name="m" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleSizeChange}/>
                 </div>
                 <div className="text-sm leading-6">
                   <label htmlFor="m" className="font-medium text-gray-900">M</label>
@@ -215,7 +288,8 @@ const EditProduct = ({product}) => {
                 type="number"
                 name="quantityDiscount"
                 id="quantityDiscount"
-                value={product.discount}
+                value={editProduct.discount}
+                onChange={handleDiscountChange}
                 className="block w-full rounded-md  py-1.5 text-gray-900 shadow-sm shadow-stone-400 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
